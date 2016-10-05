@@ -1,21 +1,23 @@
-
-const handlers = {};
-
-export default class ReduxState {
-  constructor(values) {
-    Object.assign(this,values);
+export class ReduxState {
+  constructor(props) {
+    this.props = props;
+    this.handlers = {};
+    this.default = (event) => this;
   }
   
-  register(type, callback) {
-    handlers[type] = callback;
+  register(eventName, callback) {
+    this.handlers[eventName] = callback;
+  }
+  
+  registerDefault(callback) {
+    this.default = callback;
   }
   
   handle(event) {
-    const callback = handlers[event.type];
+    const callback = handler[event.type];
+    if( callback ) 
+      return callback(event);
     
-    if(callback)
-      return callback(this, event);
-    
-    return this;
+    return this.default(event);
   }
 }
