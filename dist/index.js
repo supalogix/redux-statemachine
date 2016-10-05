@@ -8,28 +8,39 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var handlers = {};
+var ReduxState = exports.ReduxState = function () {
+  function ReduxState(props) {
+    var _this = this;
 
-var ReduxState = function () {
-  function ReduxState(values) {
     _classCallCheck(this, ReduxState);
 
-    Object.assign(this, values);
+    this.props = props;
+    this.handlers = {};
+    this.default = function (event) {
+      return _this;
+    };
   }
 
   _createClass(ReduxState, [{
+    key: "register",
+    value: function register(eventName, callback) {
+      this.handlers[eventName] = callback;
+    }
+  }, {
+    key: "registerDefault",
+    value: function registerDefault(callback) {
+      this.default = callback;
+    }
+  }, {
     key: "handle",
     value: function handle(event) {
-      var callback = handlers[event.type];
+      var callback = handler[event.type];
+      if (callback) return callback(event);
 
-      if (callback) return callback(this, event);
-
-      return this;
+      return this.default(event);
     }
   }]);
 
   return ReduxState;
 }();
-
-exports.default = ReduxState;
 //# sourceMappingURL=index.js.map
