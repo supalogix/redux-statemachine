@@ -34,7 +34,7 @@ var ReduxState = exports.ReduxState = function () {
   }, {
     key: "handle",
     value: function handle(event) {
-      var callback = handler[event.type];
+      var callback = this.handlers[event.type];
       if (callback) return callback(event);
 
       return this.default(event);

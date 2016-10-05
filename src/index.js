@@ -14,7 +14,7 @@ export class ReduxState {
   }
   
   handle(event) {
-    const callback = handler[event.type];
+    const callback = this.handlers[event.type];
     if( callback ) 
       return callback(event);
     
